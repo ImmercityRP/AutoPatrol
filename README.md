@@ -1,7 +1,7 @@
 # AutoPatrol
 A very simple script, based on vMenu's Drive Around Randomly.  Configured for ESX, with an option for Standalone as well.
 
-Enable your players to have their cars drive around randomly for them, at preset speeds. They can adjust the speed on the go. Perfect for cops who waiting between calls, or patrolling trouble areas.
+Enable your players to have their cars drive around randomly for them, at preset speeds. They can adjust the speed on the go. Perfect for cops who are waiting between calls, or patrolling trouble areas.
 
 ESX version comes with ESX.Notifications built in. Notification script or dialogs can be modified in client.lua - necessary for Standalone if you want any notifications.
 
