@@ -10,8 +10,13 @@ elseif Config.SpeedUnit == 'KMH' then
     speedMod = 3.6 
 end
 
+QBcore = nil
+if framework == 'QBCore' then
+    QBCore = exports['qb-core']:GetCoreObject()
+end
+
 RegisterCommand("AutoPatrol", function()
-    if framework == 'Standalone' or (framework == 'ESX' and not Config.Jobs or (Config.Jobs and JobCheck())) then
+    if framework == 'Standalone' or (framework == 'ESX' and not Config.Jobs or (Config.Jobs and JobCheck())) or (framework == 'QBCore' and not Config.Jobs or (Config.Jobs and JobCheck())) then
         ped = PlayerPedId()
         if active == false then
             if IsPedInAnyVehicle(ped, false) then
@@ -25,6 +30,9 @@ RegisterCommand("AutoPatrol", function()
                     if framework == 'ESX' then
                         ESX.ShowNotification('~r~Automatic ~s~Patrol ~b~Enabled~s~')
                         ESX.ShowNotification('~r~Adjust ~s~Patrol ~b~Speed~s~: ~y~'..Config.SpeedUpLabel..'~s~ / ~y~'..Config.SpeedDownLabel..'~s~')
+                    elseif framework == 'QBCore' then
+                        QBCore.Functions.Notify('~r~Automatic ~s~Patrol ~b~Enabled~s~', 'primary')
+                        QBCore.Functions.Notify('~r~Adjust ~s~Patrol ~b~Speed~s~: ~y~'..Config.SpeedUpLabel..'~s~ / ~y~'..Config.SpeedDownLabel..'~s~', 'primary')
                     end
                 end
             end
@@ -34,21 +42,36 @@ RegisterCommand("AutoPatrol", function()
             active = false
             if framework == 'ESX' then
                 ESX.ShowNotification('~r~Automatic ~s~Patrol ~b~Disabled~s~')
+            elseif framework == 'QBCore' then
+                QBCore.Functions.Notify('~r~Automatic ~s~Patrol ~b~Disabled~s~', 'primary')
             end
         end
     end
 end)
 
 function JobCheck()
-    if not ESX.PlayerData or not ESX.PlayerData.job then 
-        return false 
-    end
-    for k,v in pairs(Config.Jobs) do
-        if ESX.PlayerData.job.name == v then 
-            return true 
+    if framework == 'ESX' then
+        if not ESX.PlayerData or not ESX.PlayerData.job then 
+            return false 
         end
+        for k,v in pairs(Config.Jobs) do
+            if ESX.PlayerData.job.name == v then 
+                return true 
+            end
+        end
+        return false
+    elseif framework == 'QBCore' then
+        local playerData = QBCore.Functions.GetPlayerData()
+        if not playerData.job.name then
+            return false
+        end
+        for k,v in pairs(Config.Jobs) do
+            if playerData.job.name == v then 
+                return true 
+            end
+        end
+        return false
     end
-    return false
 end
 
 Citizen.CreateThread(function()
@@ -61,6 +84,8 @@ Citizen.CreateThread(function()
                 local currentSpeed = math.floor(speeds[speed] * speedMod)
                 if framework == 'ESX' then
                     ESX.ShowNotification('~r~Patrol Speed~s~: '..currentSpeed..'~b~ '..Config.SpeedUnit..'~s~')
+                elseif framework == 'QBCore' then
+                    QBCore.Functions.Notify('~r~Patrol Speed~s~: '..currentSpeed..'~b~ '..Config.SpeedUnit..'~s~', 'primary')
                 end
                 SetVehicleMaxSpeed(vehicle, speeds[speed])
             elseif IsControlJustReleased(0, Config.SpeedDown) then
@@ -69,6 +94,8 @@ Citizen.CreateThread(function()
                 local currentSpeed = math.floor(speeds[speed] * speedMod)
                 if framework == 'ESX' then
                     ESX.ShowNotification('~r~Patrol Speed~s~: '..currentSpeed..'~b~ '..Config.SpeedUnit..'~s~')
+                elseif framework == 'QBCore' then
+                    QBCore.Functions.Notify('~r~Patrol Speed~s~: '..currentSpeed..'~b~ '..Config.SpeedUnit..'~s~', 'primary')
                 end
                 SetVehicleMaxSpeed(vehicle, speeds[speed])
             end
