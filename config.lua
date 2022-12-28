@@ -1,6 +1,6 @@
 Config = {} -- Don't remove
 
-Config.Framework = 'ESX' -- Can be 'ESX' or 'Standalone'
+Config.Framework = 'ESX' -- Can be 'ESX' or 'QBCore' or 'Standalone'
 
 Config.Speeds = { -- Can list as many as you want - must be a float value
     2.236936, -- 5 mph / 8 kmh
