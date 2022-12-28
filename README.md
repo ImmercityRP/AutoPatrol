@@ -1,5 +1,5 @@
 # AutoPatrol
-A very simple script, based on vMenu's Drive Around Randomly.  Configured for ESX, with an option for Standalone as well.
+A very simple script, based on vMenu's Drive Around Randomly.  Configured for ESX, with an option for QBCore or Standalone as well.
 
 Enable your players to have their cars drive around randomly for them, at preset speeds. They can adjust the speed on the go. Perfect for cops who are waiting between calls, or patrolling trouble areas.
 
